@@ -14,7 +14,10 @@ func main() {
 	//为什么我们通过golang运行main.go的时候并没有生成main.exe文件
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	fmt.Println(dir)
-	router.LoadHTMLFiles("templates/index.tmpl")
+	//C:\Users\Anwma\AppData\Local\Temp\GoLand
+	//推荐在指定目录下 go build 后运行
+	router.LoadHTMLGlob("templates/**/*")
+	//router.LoadHTMLFiles("templates/index.tmpl", "templates/goods.html")
 
 	router.GET("/index", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
@@ -22,8 +25,20 @@ func main() {
 		})
 	})
 
+	router.GET("/goods/list", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "list.html", gin.H{
+			"name": "Golang",
+		})
+	})
+
+	router.GET("/users/list", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "list.html", gin.H{
+			"name": "Golang",
+		})
+	})
+
 	router.GET("/goods", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+		c.HTML(http.StatusOK, "goods.html", gin.H{
 			"name": "Golang",
 		})
 	})
