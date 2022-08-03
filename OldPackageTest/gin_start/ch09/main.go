@@ -10,6 +10,7 @@ import (
 
 func main() {
 	router := gin.Default()
+	//优雅退出
 	//LoadHTMLFiles 会将指定目录下的文件加载好，相对目录
 	//为什么我们通过golang运行main.go的时候并没有生成main.exe文件
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
