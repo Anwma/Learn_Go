@@ -21,6 +21,7 @@ func main() {
 	nums := []int{1, 0, 3, 5, 0}
 	MoveZeroes(nums)
 	fmt.Println(nums)
+
 }
 
 func MoveZeroes(nums []int) {
