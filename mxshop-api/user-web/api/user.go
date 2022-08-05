@@ -3,8 +3,11 @@ package api
 import (
 	"context"
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"mxshop-api/user-web/middlewares"
+	"mxshop-api/user-web/models"
 	"strings"
 
 	"go.uber.org/zap"
@@ -72,7 +75,7 @@ func HandleValidatorError(c *gin.Context, err error) {
 	})
 }
 func GetUserList(ctx *gin.Context) {
-	//拨号连接用户 grpc 服务器
+	//拨号连接用户 grpc 服务器  跨域的问题 -- 后端解决 也可以前端解决
 	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvInfo.Host,
 		global.ServerConfig.UserSrvInfo.Port), grpc.WithInsecure())
 	if err != nil {
@@ -80,6 +83,9 @@ func GetUserList(ctx *gin.Context) {
 			"msg", err.Error(),
 		)
 	}
+	claims, _ := ctx.Get("claims")
+	currentUser := claims.(*models.CustomClaims)
+	zap.S().Infof("访问用户：%d", currentUser.ID)
 	//生成grpc的client并调用接口
 	userSrvClient := proto.NewUserClient(userConn)
 
@@ -126,6 +132,15 @@ func PassWordLogin(c *gin.Context) {
 		HandleValidatorError(c, err)
 		return
 	}
+
+	//验证码验证
+	if !store.Verify(passwordLoginForm.CaptchaId, passwordLoginForm.Captcha, true) {
+		c.JSON(http.StatusBadRequest,gin.H{
+			"captcha":"验证码错误",
+		})
+		return
+	}
+
 	//拨号连接用户 grpc 服务器
 	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvInfo.Host,
 		global.ServerConfig.UserSrvInfo.Port), grpc.WithInsecure())
@@ -169,8 +184,31 @@ func PassWordLogin(c *gin.Context) {
 			})
 		} else {
 			if passRsp.Success {
-				c.JSON(http.StatusOK, map[string]string{
-					"msg": "登录成功",
+				//生成token
+				j := middlewares.NewJWT()
+				claims := models.CustomClaims{
+					ID:          uint(rsp.Id),
+					NickName:    rsp.NickName,
+					AuthorityId: uint(rsp.Role),
+					StandardClaims: jwt.StandardClaims{
+						NotBefore: time.Now().Unix(),               //签名的生效时间
+						ExpiresAt: time.Now().Unix() + 60*60*24*30, //30天过期
+						Issuer:    "jetbrains",
+					},
+				}
+				token, err := j.CreateToken(claims)
+				if err != nil {
+					c.JSON(http.StatusInternalServerError, gin.H{
+						"msg": "生成token失败",
+					})
+					return
+				}
+
+				c.JSON(http.StatusOK, gin.H{
+					"id":         rsp.Id,
+					"nick_name":  rsp.NickName,
+					"token":      token,
+					"expires_at": (time.Now().Unix() + 60*60*24*30) * 1000, //毫秒级别？？？
 				})
 			} else {
 				c.JSON(http.StatusBadRequest, map[string]string{

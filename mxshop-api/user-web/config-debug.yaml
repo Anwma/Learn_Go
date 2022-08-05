@@ -3,3 +3,18 @@ port: 8021
 user_srv:
   host: '127.0.0.1'
   port: 50051
+
+jwt:
+  key: 'rV6cQ6mph@J$n%VG5dtE4f$#xp@jCbY6'
+
+sms:
+  # 到时候自己注册好了填写进来
+  # ApiKey    string `mapstructure:"key"`
+  #	ApiSecret string `mapstructure:"secret"`
+  key: 'xxxxx'
+  secret: 'xxxx'
+  expire: 300
+
+redis:
+  host: '192.168.119.128'
+  port: 6379
