@@ -1,15 +1,23 @@
 package initialize
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"mxshop-api/user-web/middlewares"
 	"mxshop-api/user-web/router"
+	"net/http"
 )
 
 func Routers() *gin.Engine {
-	fmt.Println("【Routers】初始化")
 	Router := gin.Default()
+	Router.GET("/health", func(c *gin.Context) {
+		c.JSON(http.StatusOK,gin.H{
+			"code":http.StatusOK,
+			"success":true,
+		})
+	})
+
+	//fmt.Println("【Routers】初始化")
+	//Router := gin.Default()
 	//配置跨域
 	Router.Use(middlewares.Cors())
 
