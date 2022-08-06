@@ -2,6 +2,7 @@ package main
 
 import (
 	"OldPackageTest/stream_grpc_test/proto"
+	//"OldPackageTest/stream_grpc_test/proto"
 	"fmt"
 	"google.golang.org/grpc"
 	"net"

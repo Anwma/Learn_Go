@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/go-redis/redis/v8"
+	"github.com/hashicorp/consul/api"
 	"mxshop-api/user-web/middlewares"
 	"mxshop-api/user-web/models"
 	"strings"
@@ -63,6 +64,7 @@ func HandleGrpcErrorToHttp(err error, c *gin.Context) {
 		}
 	}
 }
+
 func HandleValidatorError(c *gin.Context, err error) {
 	errs, ok := err.(validator.ValidationErrors)
 	if !ok {
@@ -75,10 +77,44 @@ func HandleValidatorError(c *gin.Context, err error) {
 		"error": removeTopStruct(errs.Translate(global.Trans)),
 	})
 }
+
 func GetUserList(ctx *gin.Context) {
+	//从注册中心获取到用户服务的信息
+	cfg := api.DefaultConfig()
+	consulInfo := global.ServerConfig.ConsulInfo
+	cfg.Address = fmt.Sprintf("%s:%d", consulInfo.Host, consulInfo.Port)
+
+	userSrvHost := ""
+	userSrvPort := 0
+
+	client, err := api.NewClient(cfg)
+	if err != nil {
+		panic(err)
+	}
+	//三种方式人选其一 ``不用加\作为转义符
+	//data, err := client.Agent().ServicesWithFilter(fmt.Sprintf(`Service == "%s"`, global.ServerConfig.UserSrvInfo.Name))
+	data, err := client.Agent().ServicesWithFilter(fmt.Sprintf("Service == \"%s\"", global.ServerConfig.UserSrvInfo.Name))
+	//data, err := client.Agent().ServicesWithFilter(`Service == "user-srv"`)
+
+	if err != nil {
+		panic(err)
+	}
+	for _, value := range data {
+		userSrvHost = value.Address
+		userSrvPort = value.Port
+		break
+		//fmt.Println(key)
+	}
+
+	if userSrvHost == ""{
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"captcha": "用户服务不可达",
+		})
+		return
+	}
+
 	//拨号连接用户 grpc 服务器  跨域的问题 -- 后端解决 也可以前端解决
-	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvInfo.Host,
-		global.ServerConfig.UserSrvInfo.Port), grpc.WithInsecure())
+	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", userSrvHost, userSrvPort), grpc.WithInsecure())
 	if err != nil {
 		zap.S().Errorw("[GetUserList] 连接 【用户服务失败】",
 			"msg", err.Error(),
@@ -135,7 +171,8 @@ func PassWordLogin(c *gin.Context) {
 	}
 
 	//验证码验证
-	if !store.Verify(passwordLoginForm.CaptchaId, passwordLoginForm.Captcha, true) {
+	//此处的验证码暂时true调整为false
+	if !store.Verify(passwordLoginForm.CaptchaId, passwordLoginForm.Captcha, false) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"captcha": "验证码错误",
 		})
@@ -295,6 +332,5 @@ func Register(c *gin.Context) {
 		"token":      token,
 		"expires_at": (time.Now().Unix() + 60*60*24*30) * 1000, //毫秒级别？？？
 	})
-
 
 }

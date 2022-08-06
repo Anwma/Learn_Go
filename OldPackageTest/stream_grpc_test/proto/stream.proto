@@ -1,5 +1,6 @@
 syntax = "proto3";
-option go_package = "../../common/stream/proto/v1"; //指定生成某些文件夹 ;proto指定package包名
+//option go_package = "../../common/stream/proto/v1"; //指定生成某些文件夹 ;proto指定package包名
+option go_package = ".;proto";
 service Greeter{
   rpc GetStream(StreamReqData) returns(stream StreamResData); // 服务端流模式
   rpc PutStream(stream StreamReqData) returns(StreamResData); // 客户端流模式
