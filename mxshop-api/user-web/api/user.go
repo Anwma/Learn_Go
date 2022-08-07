@@ -7,13 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/go-redis/redis/v8"
-	"github.com/hashicorp/consul/api"
 	"mxshop-api/user-web/middlewares"
 	"mxshop-api/user-web/models"
 	"strings"
 
 	"go.uber.org/zap"
-	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"mxshop-api/user-web/forms"
@@ -79,52 +77,9 @@ func HandleValidatorError(c *gin.Context, err error) {
 }
 
 func GetUserList(ctx *gin.Context) {
-	//从注册中心获取到用户服务的信息
-	cfg := api.DefaultConfig()
-	consulInfo := global.ServerConfig.ConsulInfo
-	cfg.Address = fmt.Sprintf("%s:%d", consulInfo.Host, consulInfo.Port)
-
-	userSrvHost := ""
-	userSrvPort := 0
-
-	client, err := api.NewClient(cfg)
-	if err != nil {
-		panic(err)
-	}
-	//三种方式人选其一 ``不用加\作为转义符
-	//data, err := client.Agent().ServicesWithFilter(fmt.Sprintf(`Service == "%s"`, global.ServerConfig.UserSrvInfo.Name))
-	data, err := client.Agent().ServicesWithFilter(fmt.Sprintf("Service == \"%s\"", global.ServerConfig.UserSrvInfo.Name))
-	//data, err := client.Agent().ServicesWithFilter(`Service == "user-srv"`)
-
-	if err != nil {
-		panic(err)
-	}
-	for _, value := range data {
-		userSrvHost = value.Address
-		userSrvPort = value.Port
-		break
-		//fmt.Println(key)
-	}
-
-	if userSrvHost == ""{
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"captcha": "用户服务不可达",
-		})
-		return
-	}
-
-	//拨号连接用户 grpc 服务器  跨域的问题 -- 后端解决 也可以前端解决
-	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", userSrvHost, userSrvPort), grpc.WithInsecure())
-	if err != nil {
-		zap.S().Errorw("[GetUserList] 连接 【用户服务失败】",
-			"msg", err.Error(),
-		)
-	}
 	claims, _ := ctx.Get("claims")
 	currentUser := claims.(*models.CustomClaims)
 	zap.S().Infof("访问用户：%d", currentUser.ID)
-	//生成grpc的client并调用接口
-	userSrvClient := proto.NewUserClient(userConn)
 
 	//solve: URL如何对其进行设置,尝试了?pn=1&pSize=2 不行,回头看看.还是要配置yami
 	pn := ctx.DefaultQuery("pn", "0")
@@ -133,7 +88,7 @@ func GetUserList(ctx *gin.Context) {
 	pSize := ctx.DefaultQuery("psize", "10")
 	pSizeInt, _ := strconv.Atoi(pSize)
 
-	rsp, err := userSrvClient.GetUserList(context.Background(), &proto.PageInfo{
+	rsp, err := global.UserSrvClient.GetUserList(context.Background(), &proto.PageInfo{
 		Pn:    uint32(pnInt),
 		PSize: uint32(pSizeInt),
 	})
@@ -179,19 +134,10 @@ func PassWordLogin(c *gin.Context) {
 		return
 	}
 
-	//拨号连接用户 grpc 服务器
-	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvInfo.Host,
-		global.ServerConfig.UserSrvInfo.Port), grpc.WithInsecure())
-	if err != nil {
-		zap.S().Errorw("[GetUserList] 连接 【用户服务失败】",
-			"msg", err.Error(),
-		)
-	}
-	//生成grpc的client并调用接口
-	userSrvClient := proto.NewUserClient(userConn)
+
 
 	//登录的逻辑
-	if rsp, err := userSrvClient.GetUserByMobile(context.Background(), &proto.MobileRequest{
+	if rsp, err := global.UserSrvClient.GetUserByMobile(context.Background(), &proto.MobileRequest{
 		Mobile: passwordLoginForm.Mobile,
 	}); err != nil {
 		if e, ok := status.FromError(err); ok {
@@ -213,7 +159,7 @@ func PassWordLogin(c *gin.Context) {
 			D:\JetbrainsCode\Learn_Python\mxshop_srvs\user_srv\model\models.py line-43
 		*/
 		//只是查询到用户了而已，并没有检查密码
-		if passRsp, passErr := userSrvClient.CheckPassWord(context.Background(), &proto.PasswordCheckInfo{
+		if passRsp, passErr := global.UserSrvClient.CheckPassWord(context.Background(), &proto.PasswordCheckInfo{
 			Password:          passwordLoginForm.PassWord,
 			EncryptedPassword: rsp.PassWord,
 		}); passErr != nil {
@@ -285,17 +231,7 @@ func Register(c *gin.Context) {
 		}
 	}
 
-	//拨号连接用户 grpc 服务器
-	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvInfo.Host,
-		global.ServerConfig.UserSrvInfo.Port), grpc.WithInsecure())
-	if err != nil {
-		zap.S().Errorw("[GetUserList] 连接 【用户服务失败】",
-			"msg", err.Error(),
-		)
-	}
-	//生成grpc的client并调用接口
-	userSrvClient := proto.NewUserClient(userConn)
-	user, err := userSrvClient.CreateUser(context.Background(), &proto.CreateUserInfo{
+	user, err := global.UserSrvClient.CreateUser(context.Background(), &proto.CreateUserInfo{
 		NickName: registerForm.Mobile,
 		PassWord: registerForm.PassWord,
 		Mobile:   registerForm.Mobile,
