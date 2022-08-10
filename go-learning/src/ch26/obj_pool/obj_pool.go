@@ -21,6 +21,9 @@ func NewObjPool(numOfObj int) *ObjPool {
 	return &objPool
 }
 
+//在实际工作当中，并不建议使用interface{},建议使用不同的池来缓存不同用途的对象
+//func (p *ObjPool) GetObj(timeout time.Duration) (interface{}, error) {
+
 func (p *ObjPool) GetObj(timeout time.Duration) (*ReusableObj, error) {
 	select {
 	case ret := <-p.bufChan:

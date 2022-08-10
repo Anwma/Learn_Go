@@ -39,3 +39,4 @@ func TestSquareWithAssert(t *testing.T) {
 		assert.Equal(t, expected[i], ret)
 	}
 }
+//task: 为以前的代码写一些单元测试

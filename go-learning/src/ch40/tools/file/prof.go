@@ -63,14 +63,13 @@ func main() {
 
 	f2, err := os.Create("goroutine.prof")
 	if err != nil {
-		log.Fatal("could not create groutine profile: ", err)
+		log.Fatal("could not create goroutine profile: ", err)
 	}
 
 	if gProf := pprof.Lookup("goroutine"); gProf == nil {
-		log.Fatal("could not write groutine profile: ")
+		log.Fatal("could not write goroutine profile: ")
 	} else {
 		gProf.WriteTo(f2, 0)
 	}
 	f2.Close()
-
 }

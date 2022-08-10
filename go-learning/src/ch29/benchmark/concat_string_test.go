@@ -53,5 +53,4 @@ func BenchmarkConcatStringByBytesBuffer(b *testing.B) {
 		}
 	}
 	b.StopTimer()
-
 }

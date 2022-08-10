@@ -14,7 +14,9 @@ func runTask(id int) string {
 
 func FirstResponse() string {
 	numOfRunner := 10
+	//采用buffer channel 来防止协程泄露
 	ch := make(chan string, numOfRunner)
+	//ch := make(chan string)
 	for i := 0; i < numOfRunner; i++ {
 		go func(i int) {
 			ret := runTask(i)
@@ -29,5 +31,4 @@ func TestFirstResponse(t *testing.T) {
 	t.Log(FirstResponse())
 	time.Sleep(time.Second * 1)
 	t.Log("After:", runtime.NumGoroutine())
-
 }

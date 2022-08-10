@@ -8,7 +8,6 @@ import (
 )
 
 type Singleton struct {
-	data string
 }
 
 var singleInstance *Singleton
@@ -16,7 +15,7 @@ var once sync.Once
 
 func GetSingletonObj() *Singleton {
 	once.Do(func() {
-		fmt.Println("Create Obj")
+		fmt.Println("Create obj")
 		singleInstance = new(Singleton)
 	})
 	return singleInstance
@@ -28,7 +27,7 @@ func TestGetSingletonObj(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			obj := GetSingletonObj()
-			fmt.Printf("%X\n", unsafe.Pointer(obj))
+			fmt.Printf("%x\n", unsafe.Pointer(obj))
 			wg.Done()
 		}()
 	}

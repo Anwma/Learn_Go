@@ -1,5 +1,5 @@
-// Package pipefilter is to define the interfaces and the structures for pipe-filter style implementation
 package pipefilter
+// Package pipe-filter is to define the interfaces and the structures for pipe-filter style implementation
 
 // Request is the input of the filter
 type Request interface{}

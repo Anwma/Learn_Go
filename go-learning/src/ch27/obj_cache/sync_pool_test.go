@@ -18,9 +18,21 @@ func TestSyncPool(t *testing.T) {
 	v := pool.Get().(int)
 	fmt.Println(v)
 	pool.Put(3)
-	runtime.GC() //GC 会清除sync.pool中缓存的对象
+	runtime.GC() //GC 会清除sync.pool中缓存的对象...不知道为啥有时候能GC到,有时候不能...
 	v1, _ := pool.Get().(int)
 	fmt.Println(v1)
+	v2, _ := pool.Get().(int)
+	fmt.Println(v2)
+	/*	GC: unsafe包的原因？？？
+		Create a new object.
+		100
+		Create a new object.
+		100
+
+		Create a new object.
+		100
+		3
+	 */
 }
 
 func TestSyncPoolInMultiGroutine(t *testing.T) {
