@@ -7,9 +7,9 @@ import (
 func main() {
 	//给定 s := make([]byte, 5)，len (s) 和 cap (s) 分别是多少？
 	//s = s[2:4]，len (s) 和 cap (s) 又分别是多少？
-	s := make([]byte, 5)
+	s := make([]byte, 5)        //0 1 2 3 4
 	fmt.Println(len(s), cap(s)) // 5 5
-	s = s[2:4]
+	s = s[2:4]                  //2 3
 	fmt.Println(len(s), cap(s)) // 2 3
 
 	//假设 s1 := []byte{'p', 'o', 'e', 'm'} 且 s2 := s1[2:]，s2 的值是多少？

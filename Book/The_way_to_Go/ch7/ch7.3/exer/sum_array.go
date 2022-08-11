@@ -20,5 +20,5 @@ func Sum(arrF []float32) float32 {
 }
 
 func SumAndAverage(n1 int, n2 int) (int, float32) {
-	return n1 + n2, float32((n1 + n2) / 2)
+	return n1 + n2, float32(n1 + n2/2)
 }

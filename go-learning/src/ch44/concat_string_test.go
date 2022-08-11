@@ -27,7 +27,6 @@ func BenchmarkStringBuilder(b *testing.B) {
 		var builder strings.Builder
 		for i := 0; i < numbers; i++ {
 			builder.WriteString(strconv.Itoa(i))
-
 		}
 		_ = builder.String()
 	}

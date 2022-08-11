@@ -3,8 +3,8 @@ package main
 import "fmt"
 
 func main() {
-	var a = []byte{1}
-	var b = []byte{0}
+	var a = []byte{0, 1, 2}
+	var b = []byte{0, 1, 3}
 	fmt.Println(Compare(a, b))
 }
 func Compare(a, b []byte) int {

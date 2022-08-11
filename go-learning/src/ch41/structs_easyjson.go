@@ -17,7 +17,7 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjson6a975c40DecodeCh47(in *jlexer.Lexer, out *Response) {
+func easyjson6a975c40DecodeGoLearningSrcCh41(in *jlexer.Lexer, out *Response) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -28,7 +28,7 @@ func easyjson6a975c40DecodeCh47(in *jlexer.Lexer, out *Response) {
 	}
 	in.Delim('{')
 	for !in.IsDelim('}') {
-		key := in.UnsafeString()
+		key := in.UnsafeFieldName(false)
 		in.WantColon()
 		if in.IsNull() {
 			in.Skip()
@@ -50,28 +50,18 @@ func easyjson6a975c40DecodeCh47(in *jlexer.Lexer, out *Response) {
 		in.Consumed()
 	}
 }
-func easyjson6a975c40EncodeCh47(out *jwriter.Writer, in Response) {
+func easyjson6a975c40EncodeGoLearningSrcCh41(out *jwriter.Writer, in Response) {
 	out.RawByte('{')
 	first := true
 	_ = first
 	{
 		const prefix string = ",\"transaction_id\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix[1:])
 		out.String(string(in.TransactionID))
 	}
 	{
 		const prefix string = ",\"exp\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		out.String(string(in.Expression))
 	}
 	out.RawByte('}')
@@ -80,27 +70,27 @@ func easyjson6a975c40EncodeCh47(out *jwriter.Writer, in Response) {
 // MarshalJSON supports json.Marshaler interface
 func (v Response) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6a975c40EncodeCh47(&w, v)
+	easyjson6a975c40EncodeGoLearningSrcCh41(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Response) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6a975c40EncodeCh47(w, v)
+	easyjson6a975c40EncodeGoLearningSrcCh41(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Response) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6a975c40DecodeCh47(&r, v)
+	easyjson6a975c40DecodeGoLearningSrcCh41(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Response) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6a975c40DecodeCh47(l, v)
+	easyjson6a975c40DecodeGoLearningSrcCh41(l, v)
 }
-func easyjson6a975c40DecodeCh471(in *jlexer.Lexer, out *Request) {
+func easyjson6a975c40DecodeGoLearningSrcCh411(in *jlexer.Lexer, out *Request) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -111,7 +101,7 @@ func easyjson6a975c40DecodeCh471(in *jlexer.Lexer, out *Request) {
 	}
 	in.Delim('{')
 	for !in.IsDelim('}') {
-		key := in.UnsafeString()
+		key := in.UnsafeFieldName(false)
 		in.WantColon()
 		if in.IsNull() {
 			in.Skip()
@@ -154,28 +144,18 @@ func easyjson6a975c40DecodeCh471(in *jlexer.Lexer, out *Request) {
 		in.Consumed()
 	}
 }
-func easyjson6a975c40EncodeCh471(out *jwriter.Writer, in Request) {
+func easyjson6a975c40EncodeGoLearningSrcCh411(out *jwriter.Writer, in Request) {
 	out.RawByte('{')
 	first := true
 	_ = first
 	{
 		const prefix string = ",\"transaction_id\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix[1:])
 		out.String(string(in.TransactionID))
 	}
 	{
 		const prefix string = ",\"payload\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		out.RawString(prefix)
 		if in.PayLoad == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 			out.RawString("null")
 		} else {
@@ -195,23 +175,23 @@ func easyjson6a975c40EncodeCh471(out *jwriter.Writer, in Request) {
 // MarshalJSON supports json.Marshaler interface
 func (v Request) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson6a975c40EncodeCh471(&w, v)
+	easyjson6a975c40EncodeGoLearningSrcCh411(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Request) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson6a975c40EncodeCh471(w, v)
+	easyjson6a975c40EncodeGoLearningSrcCh411(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Request) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson6a975c40DecodeCh471(&r, v)
+	easyjson6a975c40DecodeGoLearningSrcCh411(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Request) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson6a975c40DecodeCh471(l, v)
+	easyjson6a975c40DecodeGoLearningSrcCh411(l, v)
 }

@@ -8,9 +8,11 @@ import (
 
 const (
 	NumOfReader = 100
-	NumOfWriter = 10
+	NumOfWriter = 1000
 )
-
+//读 == 写: concurrent_map-8
+//写 >/>> 读:concurrent_map-8
+//写 </<< 读:concurrent_map-8
 type Map interface {
 	Set(key interface{}, val interface{})
 	Get(key interface{}) (interface{}, bool)
