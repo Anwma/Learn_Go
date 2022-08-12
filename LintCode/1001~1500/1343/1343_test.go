@@ -6,7 +6,8 @@ import (
 )
 
 func SumofTwoStrings(a string, b string) string {
-	// write your code here
+	//高效字符串拼接： bytes.Buffer  strings.Builder
+	//write your code here
 	res := ""
 	indexA, indexB := len(a)-1, len(b)-1
 	for indexA >= 0 && indexB >= 0 {
@@ -23,6 +24,9 @@ func SumofTwoStrings(a string, b string) string {
 	}
 	return res
 }
+
+
+
 func BenchmarkSumofTwoStrings(b *testing.B) {
 
 	b.ResetTimer()
