@@ -1,4 +1,7 @@
 package _28
+
+import "testing"
+
 type ListNode struct {
 	Val  int
 	Next *ListNode
@@ -16,4 +19,11 @@ func MiddleNode(head *ListNode) *ListNode {
 
 
 	return nil
+}
+
+func BenchmarkMiddleNode(b *testing.B) {
+
+	for i := 0; i < b.N; i++ {
+
+	}
 }
