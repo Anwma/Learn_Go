@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebResourcesPaths">
+    <contentEntries>
+      <entry url="file://$PROJECT_DIR$">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/toy-web-main/examples/first_lesson" />
+            <path value="file://$PROJECT_DIR$/Golang" />
+            <path value="file://$PROJECT_DIR$/Book/Build-web-Application/ch2/basic" />
+            <path value="file://$PROJECT_DIR$/Book/Black_Book/ch1/helloworld" />
+            <path value="file://$PROJECT_DIR$/Book/Black_Book/ch1/dup1" />
+            <path value="file://$PROJECT_DIR$/Book/Black_Book/ch1/echo" />
+            <path value="file://$PROJECT_DIR$/Book/Black_Book/ch2/boiling" />
+            <path value="file://$PROJECT_DIR$/Book/Build-web-Application/ch2/hello" />
+            <path value="file://$PROJECT_DIR$/Book/Build-web-Application/ch2/process_Function" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+    </contentEntries>
+  </component>
+</project>

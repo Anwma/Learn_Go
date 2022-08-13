@@ -3,11 +3,12 @@ package main
 import "fmt"
 
 func main() {
-	for i := 1000; i <= 1500; i++ {
-		fmt.Printf("%d;", i)
-		if i % 20 == 0{
-			fmt.Println()
-			fmt.Print("md ")
-		}
+	array := []int{1, 2}
+	length := len(array) + 1
+	slice := make([]int, length)
+	fmt.Println(slice)
+	for i := 0; i < length-1; i++ {
+		slice = append(slice,1)
+		slice[array[i]]++
 	}
 }
