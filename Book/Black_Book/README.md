@@ -1,5 +1,12 @@
 # The Go Programming Language
 
+>本文件夹为黑皮书的源代码，目前正在阅读（二、三刷了）
+# 日志
+#### 2022-08-13
+> ch1 dup1 echo helloworld
+#### 2022-08-14
+> 
+
 This repository provides the downloadable example programs
 for the book, "The Go Programming Language"; see http://www.gopl.io.
 
