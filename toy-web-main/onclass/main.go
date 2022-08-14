@@ -25,8 +25,8 @@ func test(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	server := NewHttpServer("test-server")
-	server.Route("/user/signup", SignUp)
+	//server := NewHttpServer("test-server")
+	//server.Route("/user/signup", SignUp)
 	//http.HandleFunc("/", home)
 	//http.HandleFunc("/user", user)
 	//http.HandleFunc("/user/create", createUser)
