@@ -24,10 +24,8 @@ func ToArrayList(head *ListNode) []int {
 	return arr
 }
 
-
-
 func BenchmarkToArrayList(b *testing.B) {
-	list := []int{3, 5, 8}
+	list := []int{1, 2, 3, 4, 5}
 	head := &ListNode{Val: list[0]}
 	for i := 1; i < len(list); i++ {
 		head.Append(list[i])

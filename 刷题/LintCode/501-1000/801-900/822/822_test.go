@@ -27,12 +27,12 @@ func (h *ListNode) Append(i int) {
 	for h.Next != nil {
 		h = h.Next
 	}
-	h.Next = &ListNode{Val:i}
+	h.Next = &ListNode{Val: i}
 }
 
 func BenchmarkReverseStore(b *testing.B) {
 	list := []int{2,4,3}
-	head := &ListNode{Val:list[0]}
+	head := &ListNode{Val: list[0]}
 	for i:=1;i<len(list);i++ {
 		head.Append(list[i])
 	}
