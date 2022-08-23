@@ -1,9 +1,9 @@
 package main
 
-func main() {
-	nums := []int{1, 2, 7, 7, 2, 10, 3, 4, 5}
-	MaxSlidingWindow(nums, 2)
-}
+//func main() {
+//	nums := []int{1, 2, 7, 7, 2, 10, 3, 4, 5}
+//	MaxSlidingWindow(nums, 2)
+//}
 
 //暴力
 
