@@ -1,6 +1,12 @@
 package main
 
-import "testing"
+import "fmt"
+
+func main()  {
+	score := []int{100,101,102,103,104,98,87}
+	ask := []int{1,2,3,4,5,6,7}
+	fmt.Print(EnglishSoftware(score,ask))
+}
 
 func EnglishSoftware(score []int, ask []int) []int {
 	// write your code here
@@ -16,14 +22,4 @@ func EnglishSoftware(score []int, ask []int) []int {
 		r[i] = (c - 1) * 100 / sCount
 	}
 	return r
-}
-
-func BenchmarkEnglishSoftware(b *testing.B) {
-	score := []int{100, 98, 87,101}
-	ask := []int{1, 2, 3,4}
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		EnglishSoftware(score, ask)
-	}
-	b.StopTimer()
 }
