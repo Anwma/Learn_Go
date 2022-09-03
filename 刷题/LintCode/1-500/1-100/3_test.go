@@ -18,6 +18,6 @@ func DigitCounts(k int, n int) int {
 
 func BenchmarkDigitCounts(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		DigitCounts(5,3)
+		DigitCounts(5, 3)
 	}
 }
