@@ -1,10 +1,6 @@
 // 7.13
 package main
 
-import (
-	"unsafe"
-)
-
 /*
 func main() {
 	str := "hello,world"
@@ -34,7 +30,7 @@ func bytes2string(b []byte) string {
 	return *(*string)(unsafe.Pointer(&b))
 }
 
-*/
+
 
 func string2bytes(s string) []byte {
 	return *(*[]byte)(unsafe.Pointer(
@@ -44,3 +40,4 @@ func string2bytes(s string) []byte {
 		}{s, len(s)},
 	))
 }
+ */
