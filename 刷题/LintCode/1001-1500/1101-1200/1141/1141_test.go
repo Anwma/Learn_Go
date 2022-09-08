@@ -22,6 +22,7 @@ func IsLeapYear(n int) bool {
 	}
 	return false
 }
+
 func BenchmarkGetTheMonthDays(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {

@@ -46,6 +46,8 @@ func BenchmarkMergeSortedArray(b *testing.B) {
 	arrA := []int{1, 2, 3, 4}
 	arrB := []int{2, 4, 5, 6}
 	for i := 0; i < b.N; i++ {
-		MergeSortedArray1(arrA, arrB)
+		MergeSortedArray(arrA, arrB)
+		//0		121.4 ns/op
+		//1		39.71 ns/op
 	}
 }

@@ -9,6 +9,7 @@ func ReverseArray(nums []int) {
 		nums[i], nums[n-i] = nums[n-i], nums[i]
 	}
 }
+
 func BenchmarkReverseArray(b *testing.B) {
 	nums := []int{1, 2, 5}
 	b.ResetTimer()

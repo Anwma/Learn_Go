@@ -1,5 +1,7 @@
 package main
 
+import "testing"
+
 func MinWindow(source string, target string) string {
 	// write your code here
 	// corner case
@@ -43,8 +45,14 @@ func MinWindow(source string, target string) string {
 		left++
 	}
 	if ansLeft == -1 {
-		return  ""
-	}else {
+		return ""
+	} else {
 		return source[ansLeft:ansRight]
+	}
+}
+
+func BenchmarkMinWindow(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		MinWindow("abc", "ac")
 	}
 }

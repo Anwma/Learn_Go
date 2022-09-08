@@ -4,7 +4,6 @@ import (
 	"math/rand"
 	"sort"
 	"testing"
-	"time"
 )
 
 func KthLargestElement(k int, nums []int) int {
@@ -14,7 +13,6 @@ func KthLargestElement(k int, nums []int) int {
 }
 
 func KthLargestElement1(k int, nums []int) int {
-	rand.Seed(time.Now().UnixNano())
 	return quickSelect(nums, 0, len(nums)-1, len(nums)-k)
 }
 
@@ -50,7 +48,7 @@ func partition(a []int, l, r int) int {
 func KthLargestElement2(k int, nums []int) int {
 	heapSize := len(nums)
 	buildMaxHeap(nums, heapSize)
-	for i := len(nums) - 1; i >= len(nums) - k + 1; i-- {
+	for i := len(nums) - 1; i >= len(nums)-k+1; i-- {
 		nums[0], nums[i] = nums[i], nums[0]
 		heapSize--
 		maxHeapify(nums, 0, heapSize)
@@ -59,13 +57,13 @@ func KthLargestElement2(k int, nums []int) int {
 }
 
 func buildMaxHeap(a []int, heapSize int) {
-	for i := heapSize/2; i >= 0; i-- {
+	for i := heapSize / 2; i >= 0; i-- {
 		maxHeapify(a, i, heapSize)
 	}
 }
 
 func maxHeapify(a []int, i, heapSize int) {
-	l, r, largest := i * 2 + 1, i * 2 + 2, i
+	l, r, largest := i*2+1, i*2+2, i
 	if l < heapSize && a[l] > a[largest] {
 		largest = l
 	}
@@ -77,50 +75,51 @@ func maxHeapify(a []int, i, heapSize int) {
 		maxHeapify(a, largest, heapSize)
 	}
 }
+
 func KthLargestElement3(k int, nums []int) int {
 	if nums == nil || len(nums) == 0 {
 		return -1
 	}
-	res := KSelect(nums,0,len(nums)-1,k-1)
+	res := KSelect(nums, 0, len(nums)-1, k-1)
 	return res
 }
 
-func KSelect(nums []int,start int,end int,k int) int {
+func KSelect(nums []int, start int, end int, k int) int {
 	if start == end {
 		return nums[start]
 	}
 
-	left,right := start,end
-	povit := nums[start+ (end - start)/2]
+	left, right := start, end
+	povit := nums[start+(end-start)/2]
 	for left <= right {
-		for left <= right && nums[left] > povit{
+		for left <= right && nums[left] > povit {
 			left++
 		}
-		for left <= right && nums[right] < povit{
+		for left <= right && nums[right] < povit {
 			right--
 		}
 		if left <= right {
-			nums[left],nums[right]=nums[right],nums[left]
+			nums[left], nums[right] = nums[right], nums[left]
 			left++
 			right--
 		}
 
 	}
 	if k >= start && k <= right {
-		return KSelect(nums,start,right,k)
+		return KSelect(nums, start, right, k)
 	}
 	if k >= left && k <= end {
-		return  KSelect(nums,left,end,k)
+		return KSelect(nums, left, end, k)
 	}
 	return nums[right+1]
 }
 func BenchmarkKthLargestElement(b *testing.B) {
 	nums := []int{1, 5, 4, 8, 2}
-	for i := 0; i < b.N*10; i++ {
+	for i := 0; i < b.N; i++ {
 		KthLargestElement2(1, nums)
-		//0  68.94 ns/op
-		//1  8705 ns/op
-		//2  18.34 ns/op
-		//3  19.34 ns/op
+		//0  50.63 ns/op
+		//1  74.58 ns/op
+		//2  12.26 ns/op
+		//3  16.96 ns/op
 	}
 }

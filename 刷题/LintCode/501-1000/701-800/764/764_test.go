@@ -5,7 +5,7 @@ import "testing"
 func Calculate(r int) []float64 {
 	// write your code here
 	PI := 3.14
-	return []float64{float64(r) * 2 * PI, float64(r*r) * PI}
+	return []float64{float64(2*r) * PI, PI * float64(r*r)}
 }
 
 func BenchmarkCalculate(b *testing.B) {
