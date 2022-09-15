@@ -1,4 +1,4 @@
-package main
+package _57
 
 import (
 	"fmt"
@@ -14,9 +14,9 @@ func BenchmarkIsUnique(b *testing.B) {
 func IsUnique(str string) bool {
 	// write your code here
 	m := make(map[string]bool)
-	for i := 0; i< len(str); i++{
+	for i := 0; i < len(str); i++ {
 		val := string(str[i])
-		if m[val]{
+		if m[val] {
 			return false
 		}
 		m[val] = true

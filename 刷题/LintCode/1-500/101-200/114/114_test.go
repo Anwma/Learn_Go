@@ -22,6 +22,6 @@ func UniquePaths(m int, n int) int {
 
 func BenchmarkUniquePaths(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		UniquePaths(7,5)
+		UniquePaths(7, 5)
 	}
 }
