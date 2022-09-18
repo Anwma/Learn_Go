@@ -1,10 +1,13 @@
 package main
 
+import "fmt"
+
 func main() {
-	m := make(map[int]int, 3)
-	//初始化map为空
-	x := len(m)
-	m[1] = m[1]
-	y := len(m)
-	println(x, y)
+	for i := 1; i <= 100; i++ {
+		if i%10 == 0 {
+			fmt.Println()
+		}
+		fmt.Print(i)
+		fmt.Print(",")
+	}
 }
